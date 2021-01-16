@@ -6,6 +6,7 @@
 <module name="Checker">
 
     <property name="charset" value="UTF-8"/>
+    <module name="SuppressWarningsFilter"/>
 
     <property name="fileExtensions" value="java, properties, xml"/>
 
@@ -25,7 +26,7 @@
     <!-- </module> -->
 
     <module name="TreeWalker">
-
+        <module name="SuppressWarningsHolder"/>
         <module name="DeclarationOrder"/>
 
         <module name="EmptyLineSeparator">
