@@ -16,18 +16,18 @@ public class HttpRequest {
     }
 
     public static HttpRequest of(String content) {
-        String[] allContent = content.split("\r\n\r\n");
+        String ls = System.lineSeparator();
+        String[] allContent = content.split(ls);
         String[] headers = allContent[0].split(" ");
         String type = headers[0];
         String[] modeNameParam = headers[1].split("/");
         String mode = modeNameParam[1];
         String name = modeNameParam[2];
-        String param = null;
+        String param = "";
         if (modeNameParam.length > 3) {
             param = modeNameParam[3];
-        }
-        if (allContent.length > 1) {
-            param = allContent[1];
+        } else if("POST".equals(type)) {
+            param = allContent[allContent.length - 1];
         }
 
         return new HttpRequest(type, mode, name, param);
