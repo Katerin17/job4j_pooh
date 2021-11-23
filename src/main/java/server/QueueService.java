@@ -23,16 +23,18 @@ public class QueueService implements Service {
         if ("POST".equals(type)) {
             queueStorage.putIfAbsent(queueName, new ConcurrentLinkedQueue<>());
             queueStorage.get(queueName).add(request.getParameters());
-            return new HttpResponse("SUCCESS", HttpStatus.OK.getStatus());
+            return new HttpResponse("", HttpStatus.OK.getStatus());
         }
         if ("GET".equals(type)) {
             if (!queueStorage.isEmpty()) {
                 String text = queueStorage.get(queueName).poll();
-                return new HttpResponse(text, HttpStatus.OK.getStatus());
+                if (text != null) {
+                    return new HttpResponse(text, HttpStatus.OK.getStatus());
+                }
             } else {
                 return new HttpResponse("", HttpStatus.NO_CONTENT.getStatus());
             }
         }
-        return new HttpResponse("FAIL", HttpStatus.BAD_REQUEST.getStatus());
+        return new HttpResponse("", HttpStatus.BAD_REQUEST.getStatus());
     }
 }

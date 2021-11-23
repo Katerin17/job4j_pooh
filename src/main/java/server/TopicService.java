@@ -30,20 +30,20 @@ public class TopicService implements Service {
             for (Map.Entry<String, ConcurrentLinkedQueue<String>> entry: currentTopic.entrySet()) {
                 entry.getValue().add(param);
             }
-            return new HttpResponse("SUCCESS", HttpStatus.OK.getStatus());
+            return new HttpResponse("", HttpStatus.OK.getStatus());
         }
         if ("GET".equals(type)) {
             topicStorage.putIfAbsent(name, new ConcurrentHashMap<>());
             topicStorage.get(name).putIfAbsent(param, new ConcurrentLinkedQueue<>());
             currentTopic = topicStorage.get(name);
-            if (!currentTopic.get(param).isEmpty()) {
-                String text = currentTopic.get(param).poll();
+            String text = currentTopic.get(param).poll();
+            if (text != null) {
                 return new HttpResponse(text, HttpStatus.OK.getStatus());
-            } else {
-                return new HttpResponse("", HttpStatus.NO_CONTENT.getStatus());
             }
+        } else {
+            return new HttpResponse("", HttpStatus.NO_CONTENT.getStatus());
         }
 
-        return new HttpResponse("FAIL", HttpStatus.BAD_REQUEST.getStatus());
+        return new HttpResponse("", HttpStatus.BAD_REQUEST.getStatus());
     }
 }
